@@ -9,5 +9,13 @@
   "lang": "ar",
   "dir": "rtl",
   "theme_color": "#176B45",
-  "background_color": "#FFFFFF"
+  "background_color": "#FFFFFF",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
