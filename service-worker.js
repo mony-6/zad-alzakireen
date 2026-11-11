@@ -1,21 +1,25 @@
-const CACHE_NAME = "zad-alzakireen-v1";
-const FILES_TO_CACHE = [
-  "./",
-  "./zad_alzakireen_index.html",
-  "./manifest.webmanifest",
-  "./icon.png"
-];
+const CACHE_NAME = "zad-alzakireen-v2";
 
 self.addEventListener("install", event => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.map(key => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener("fetch", event => {
+  if (event.request.method !== "GET") return;
+
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+    fetch(event.request).catch(() =>
+      caches.match(event.request)
+    )
   );
 });
