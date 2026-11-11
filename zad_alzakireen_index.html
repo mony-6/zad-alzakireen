@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#315b43">
+<title>زاد الذاكرين</title>
+<style>
+:root{--green:#315b43;--green2:#477653;--gold:#c9a64b;--cream:#f7f5ed;--ink:#26352b;--muted:#68756c;--card:#fff;--line:#e7e5da}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif}
+header{background:linear-gradient(135deg,var(--green),#203f30);color:white;padding:28px 18px 34px;text-align:center;border-radius:0 0 26px 26px}
+.logo{font-size:34px;margin-bottom:5px}h1{font-size:27px;margin:0}header p{margin:8px 0 0;color:#e5eadf}
+main{max-width:720px;margin:-15px auto 40px;padding:0 14px}
+.tabs{display:flex;gap:8px;overflow:auto;padding:8px;background:#fff;border-radius:16px;box-shadow:0 5px 18px #1d352010}
+.tabs button{border:0;background:transparent;color:var(--green);padding:11px 15px;border-radius:11px;font:inherit;white-space:nowrap;cursor:pointer}
+.tabs button.active{background:var(--green);color:#fff}
+.panel{background:var(--card);margin-top:14px;padding:18px;border-radius:18px;border:1px solid var(--line);box-shadow:0 4px 16px #1d352008}
+h2{font-size:20px;margin:0 0 12px;color:var(--green)}
+.intro{color:var(--muted);font-size:14px;margin:0 0 16px}
+.zikr{border:1px solid var(--line);border-radius:15px;padding:16px;margin:12px 0}
+.zikr-text{font-size:20px;line-height:1.9;margin:0 0 12px}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+.count{background:#f2f0e6;color:var(--green);border-radius:20px;padding:6px 10px}
+.action{border:0;border-radius:12px;background:var(--green);color:white;padding:11px 17px;font:inherit;cursor:pointer}
+.action:active{transform:scale(.98)}.secondary{background:#eeeadd;color:var(--green)}
+.center{text-align:center}.big-count{font-size:54px;color:var(--green);font-weight:700;margin:12px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">☪</div>
+  <h1>زاد الذاكرين</h1>
+  <p>بالذكر تطمئن القلوب</p>
+</header>
+<main>
+  <nav class="tabs" aria-label="أقسام التطبيق">
+    <button class="active" data-tab="morning">أذكار الصباح</button>
+    <button data-tab="evening">أذكار المساء</button>
+    <button data-tab="tasbeeh">المسبحة</button>
+    <button data-tab="about">عن التطبيق</button>
+  </nav>
+  <section id="morning" class="panel">
+    <h2>أذكار الصباح</h2><p class="intro">ابدأ يومك بذكر الله.</p>
+    <div id="morning-list"></div>
+  </section>
+  <section id="evening" class="panel hidden">
+    <h2>أذكار المساء</h2><p class="intro">اختم يومك بذكر الله.</p>
+    <div id="evening-list"></div>
+  </section>
+  <section id="tasbeeh" class="panel hidden center">
+    <h2>المسبحة الإلكترونية</h2><p class="intro">اضغط على الزر مع كل تسبيحة.</p>
+    <div class="big-count" id="counter">0</div>
+    <button class="action" id="plus">سبّح</button>
+    <button class="action secondary" id="reset">تصفير العداد</button>
+  </section>
+  <section id="about" class="panel hidden">
+    <h2>عن زاد الذاكرين</h2>
+    <p>تطبيق بسيط يجمع أذكار الصباح والمساء ومسبحة إلكترونية، ليساعدك على المحافظة على الذكر.</p>
+    <p class="intro">الإصدار التجريبي الأول.</p>
+  </section>
+</main>
+<footer>اللهم اجعلنا من الذاكرين الله كثيرًا والذاكرات</footer>
+<script>
+const data={
+ morning:[
+  ["أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.",1],
+  ["اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور.",1],
+  ["رضيت بالله ربًا، وبالإسلام دينًا، وبمحمد ﷺ نبيًا.",3],
+  ["سبحان الله وبحمده.",100]
+ ],
+ evening:[
+  ["أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.",1],
+  ["اللهم بك أمسينا وبك أصبحنا وبك نحيا وبك نموت وإليك المصير.",1],
+  ["رضيت بالله ربًا، وبالإسلام دينًا، وبمحمد ﷺ نبيًا.",3],
+  ["سبحان الله وبحمده.",100]
+ ]
+};
+function render(key){
+ const el=document.getElementById(key+"-list");
+ el.innerHTML="";
+ data[key].forEach(([txt,total],i)=>{
+  const card=document.createElement("article");card.className="zikr";
+  const para=document.createElement("p");para.className="zikr-text";para.textContent=txt;
+  const meta=document.createElement("div");meta.className="meta";
+  const count=document.createElement("span");count.className="count";count.textContent="التكرار: "+total;
+  const btn=document.createElement("button");btn.className="action";btn.textContent="تم";
+  let n=0;btn.addEventListener("click",()=>{n++;btn.textContent=n>=total?"اكتمل ✓":`(${n}/${total})`;btn.disabled=n>=total;});
+  meta.append(count,btn);card.append(para,meta);el.append(card);
+ });
+}
+render("morning");render("evening");
+document.querySelectorAll("[data-tab]").forEach(btn=>btn.addEventListener("click",()=>{
+ document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b===btn));
+ document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hidden",s.id!==btn.dataset.tab));
+}));
+let n=0;const counter=document.getElementById("counter");
+document.getElementById("plus").addEventListener("click",()=>counter.textContent=++n);
+document.getElementById("reset").addEventListener("click",()=>{n=0;counter.textContent=n;});
+</script>
+</body>
+</html>
