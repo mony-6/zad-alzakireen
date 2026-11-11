@@ -1,0 +1,13 @@
+{
+  "name": "زاد الذاكرين",
+  "short_name": "زاد الذاكرين",
+  "description": "تطبيق الأذكار والأدعية",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
+  "theme_color": "#176B45",
+  "background_color": "#FFFFFF"
+}
